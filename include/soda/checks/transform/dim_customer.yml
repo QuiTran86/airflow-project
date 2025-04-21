@@ -1,0 +1,15 @@
+checks for dim_customer:
+  - schema:
+      fail:
+        # Failed when one of these columns is missed
+        when required column missing: [customer_id, country]
+        # Failed when these columns have wrong data types
+        when wrong column type:
+          customer_id: string
+          country: string
+  # Failed when the number of unique customer_id is > 1
+  - duplicate_count(customer_id) = 0:
+      name: all customers are unique
+  # Failed when any null values for customer_id existed in the table
+  - missing_count(customer_id) = 0:
+      name: all customers have a key
